@@ -1,48 +1,49 @@
-const info = require("./mailInfo.json");
-const ejs = require("ejs");
-const dotenv = require("dotenv");
-dotenv.config();
+const ejs = require("ejs")
+const dotenv = require("dotenv")
+const path = require("path")
+dotenv.config()
 
-const sendMail = async () => {
-    const nodemailer = require("nodemailer");
+const sendMail = async (companies, template) => {
+  const nodemailer = require("nodemailer")
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    pool: true,
+    auth: {
+      user: process.env.SMTP_GOOGLE_EMAIL,
+      pass: process.env.SMTP_GOOGLE_PASSWORD,
+    },
+  })
 
-  
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      pool: true,
-      auth: {
-        user: "sejaljain080401@gmail.com",
-        pass: process.env.PASSWORD,
-      },
-    });
-  
-    info.map(async (entry) => {
-      console.log(entry);
-      const data = await ejs.renderFile("./mail.ejs", {
-        name: 'Sejal Jain',
-        school: 'IIITM Gwalior',
+  for (let company of companies) {
+    try {
+      console.log(company)
+      const data = await ejs.renderFile(path.join(__dirname, "templates", template + ".ejs"), {
+        name: process.env.NAME,
+        school: process.env.SCHOOL,
         contact: process.env.CONTACT,
-        company: entry.Company,
-        receiver: entry.Name.split('.')[0],
-        ai_monk: "https://aimonks.com/",
-        jhaiho: "https://jhaiho.com/",
-        maalexi: "https://maalexi.com/",
-        resumeUrl: "https://drive.google.com/file/d/1wXyJeZ7SlARgj6w4Aw8elnKV9gDAgvOa/view?usp=sharing",
-        githubUrl: 'https://github.com/sejaljain123',
-        linkedinUrl: 'https://www.linkedin.com/in/sejaljain2043/'
-      });
-        let info = await transporter.sendMail({
-          from: '"Sejal Jain" <sejaljain080401@gmail.com>', // sender address
-          to: entry.Email, // list of receivers
-          subject: "Application: Remote Software Engineer", // Subject line
-          html: data, // html body
-        });
-  
-        console.log("Message sent: %s", info.messageId);
-    });
-  };
+        company: company.Company,
+        receiver: company.Name.split(".")[0],
+        resumeUrl: process.env.RESUME_URL,
+        githubUrl: process.env.GITHUB_URL,
+        linkedinUrl: process.env.LINKEDIN_URL,
+        applicationUrl: company.ApplicationUrl,
+      })
+      let info = await transporter.sendMail({
+        from: `"${process.env.NAME}" <${process.env.SMTP_GOOGLE_EMAIL}>`, // sender address
+        to: company.Email, // list of receivers
+        subject:
+          template === "mail"
+            ? "Application: Software Engineer Intern Role"
+            : "Application for referral for Software Engineering Intern, at " + company.Company, // Subject line
+        html: data, // html body
+      })
+      console.log("Message sent: %s", info.messageId)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
-  module.exports = sendMail;
-  
+module.exports = sendMail

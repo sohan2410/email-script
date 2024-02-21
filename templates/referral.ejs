@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Referral Inquiry</title>
+  </head>
+  <body>
+    <p>Greetings <%= receiver %>!</p>
+    <p>
+      I hope this email finds you well. I am <%= name %>,and I am currently a student pursuing an integrated postgraduate course in B.Tech + MBA at
+      IIITM Gwalior. I recently stumbled upon an exciting internship opportunity at <%= company %> and I'm reaching out to seek your assistance with a
+      referral. Your referral would significantly boost my chances during the interview process.
+    </p>
+    <p>
+      I believe I am a great fit for a role at <%= company %> due to my ability to solve technical problems in simple ways and prioritize
+      user-friendliness. During my previous internship, I focused on enhancing app security and usability, demonstrating my capability to handle
+      challenging tasks. Moreover, I have experience leading teams and collaborating effectively with both people and technology. My coding skills and
+      proficiency in developing efficient applications align perfectly with <%= company %>'s mission to provide powerful yet straightforward
+      solutions. Furthermore, my enthusiasm for collaborative tech projects showcases my readiness to contribute to <%= company %>'s team.
+    </p>
+    <p>
+      My extensive technical background, hands-on development experience, and academic achievements make me a strong candidate for a role at <%=
+      company %>. As an SDE Intern, I successfully implemented API key-based authentication, integrated payment gateways, and optimized user
+      interfaces, showcasing my ability to tackle complex technical issues. With a solid foundation in full-stack development, leadership roles in
+      student organizations, and experience in mentoring. Additionally, my proficiency in various programming languages, development tools, and
+      experience with scalable, serverless applications resonate with <%= company %>'s forward-thinking and innovative culture. Moreover, my
+      contributions to open-source projects and experience in project mentorship reflect my commitment to collaborative technology development, which
+      aligns with <%= company %>'s values of innovation and teamwork.
+    </p>
+    <p>Thank you for your time. Kindly consider my application.</p>
+
+    <% if (applicationUrl) { %>
+    <p>You can find more details about the internship here: <a href="<%= applicationUrl %>">Internship Details</a></p>
+    <% } %>
+    <p>Resume: <a href="<%= resumeUrl %>"><%= resumeUrl %></a></p>
+    <p>GitHub Url: <a href="<%= githubUrl %>"><%= githubUrl %></a></p>
+    <p>LinkedIn Url: <a href="<%= linkedinUrl %>"><%= linkedinUrl %></a></p>
+    <p>Thanks & Regards</p>
+    <p>
+      <%= name %><br />
+      <%= contact %>
+    </p>
+  </body>
+</html>
